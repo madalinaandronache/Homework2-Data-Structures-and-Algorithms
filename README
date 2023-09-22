@@ -1,0 +1,135 @@
+# Structuri de date şi algoritmi - Tema 3
+
+Student: Andronache Madalina-Georgiana
+Grupa: 312CC
+
+Urmatorul fisier contine informatii despre rezolvarea problemei propusa in 
+tema 3 de la SDA. Punctajul obtinut la testarea locala este de 120 de puncte,
+dintre care 20 pentru Valgrind.
+
+Cea mai mare provocare intalnita a fost rezolvarea corecta si cat mai eficienta
+a problemei propuse intr-un timp cat mai scurt. Aceasta tema a fost rezolvata
+pe parcursul a 4 zile: in total am lucrat la aceasta tema 16 h, dintre care  
+2 h fiind necesare pentru scrierea fisierului README, iar restul pentru codare
+si testarea problemei. In viitor, imi doresc rezolvarea mai rapida a 
+cerintelor.
+
+Cuprins:
+1. Cerinta 1 
+2. Cerinta 2 
+3. Fisierul principal - main.c
+
+Pentru rezolvarea intregii probleme am creat urmatoarele fisiere: main.c, c1.c,
+c2.c si structs.h. Pentru o intelegere mai buna a urmatoarelor functii 
+prezentate, este importat de mentionat ca am definit in fisierul structs.h 
+urmatoarele structuri: struct ListNode - defineste un nod din lista de 
+adiacenta a grafului, struct AdjList - defineste lista de adiancenta a unui 
+nod din graf, struct Graph - defineste un graf si struct Edge - defineste o 
+muchie cu cost.
+
+# 1. Cerinta 1
+
+Implementarea acestei cerinte mi-a luat aproximativ 5 h.
+Pentru rezolvarea acestei cerinte am implementat urmatoarele functii:
+* ListNode *newListNode(int vertex, int weight) - aceasta functie creaza un nod
+nou din lista de adiacenta cu valoarea parametrului vertex si costul weight.
+* Graph *initGraph(int n) - initializeaza un graf cu n noduri pe care il 
+returneaza ca rezultat al functiei.
+* void addEdge(Graph *graph, int source, int destination, int weight) - 
+adauga in lista de adiacenta a nodului source, nodul destinatie cu costul 
+weight. 
+* char **addWord(char **places, int *n, char *s) - in vectorul de obiective 
+places adauga sirul de caractere *s, reprezentand numele unui nou obiectiv,
+in cazul in care acesta nu exista deja in vector. Parametrul *n, reprezinta
+numarul actual al obiectivelor, acesta modificandu-se daca adaugam un nou 
+obiectiv.
+* int node_number(char **places, int n, char *s) - returneaza pozitia unui nod
+cu denumirea din sirul de caractere *s, din vectorul de obiective places. 
+Parametrul n reprezinta numarul de obiective din places.
+* Graph *createUndirectedGraph(Graph *graph, Edge *edges, int n, int m, 
+FILE *fin) - creaza un graf neorientat cu n noduri si m muchii, conform 
+datelor din fisierul de intrare dat ca parametru in urmatorul mod: pentru
+fiecare sir de caractere citit din fisierul de intare se actualizeaza vectorul
+places. Ulterior, se determina numerele nodurilor corespunzatoare denumirilor
+primite si se adauga doua muchii, atat de la nodul 1 la nodul 2, cat si de la 
+nodul 2 la nodul 1, intrucat graful este neorientat.
+* void sort(Edge *edges, int m) - sorteaza vectorul de structuri Edge primit
+ca parametru, in functie de campul cost, in ordine crescatoare, aceasta 
+functie avand ca scop pregatirea pentru aplicarea algoritmului Kruskal.
+* int countComponents(Graph *graph, int *components, FILE *fout) - determina
+numarul de componente conexe ale grafului primit ca parametru, creand in 
+acelasi timp si un vector components, in care pe pozitia i, se va afla un numar
+egal cu numarul componentei conexe din care face parte nodul i. Acest rezultat,
+numarul de componente conexe, va fi scris in fisierul dat ca parametru.
+* void dfs(int number, int *components, Graph *graph, int component) - aceasta 
+functie reprezinta parcurgerea in adancime a grafului dat ca parametru. 
+Functia va fi folosita pentru determinarea numarului de componente conexe ale 
+grafului.
+* int kruskal(Edge *edges, int *components, int nr_component, int nr_nodes, 
+int n, int m) - aplica algoritmul Kruskal pentru o componenta conexa, 
+determinand subarborele de cost minim pentru o componenta al carei numar este
+dat ca parametru prin nr_component. Initial, fiecare nod este considerat a fi 
+parte dintr-un alt subarbore. Pana cand obtinem nr_nodes - 1 muchii aplicam 
+acest algoritm: folosind vectorul edges, in care muchiile sunt ordonate 
+crescator dupa cost, verificam muchia actuala. Daca nodurile fac parte din 
+subarbori diferiti, adaugam costul muchiei la costul total si actualizam 
+vectorul in care memoram din ce subarbore face parte fiecare nod.
+* int number_nodes(int *components, int number, int n) - returneaza numarul
+de noduri care fac parte din componenta conexa cu numarul number, folosindu-ne
+de vectorul *components.
+* void sort_cost(int *cost, int n) - sorteaza vectorul *cost cu n elemente in 
+ordine crescatoare. Acest vector va fi folosit pentru afisarea costurilor 
+subarborilot de cost minim ai fiecarei componente conexe, in ordine 
+crescatoare.
+
+# 2. Cerinta 2 
+
+Implementarea acestei cerinte mi-a luat aproximativ 8h.
+Pentru rezolvarea acestei cerinte am implementat urmatoarele functii:
+* Graph *createDirectedGraph(Graph *graph, char **places, int m, FILE *fin) - 
+creaza un graf orientat cu n noduri si m muchii, in acelasi mod ca si la
+cerinta 1, insa diferenta este ca se va adauga doar muchia de la nodul 1 la
+nodul 2 in lista de adiancenta.
+* void coordinates(int *start, int *stop, int n, char **places) - prin 
+intermediul parametrilor start si stop, functia returneaza indicele nodului
+denumit "Insula" si indicele nodului cu denumirea "Corabie" din vectorul 
+places.
+* Graph *getDepths(Graph *graph, int n, char **places, FILE *fin) - conform 
+datelor citite din fisierul dat ca parametru, se va adauga pentru fiecare nod
+regasit dupa denumire in vectorul places, adancimea corespunzatoare.
+* int *getPath(int *prev, int number, int *lg) - folosindu-ne de vectorul de 
+tati *prev, acesta functie creaza si returneaza un vector care reprezinta 
+ordinea nodurilor care trebuiesc traversate ca sa ajungem pana in nodul cu 
+numarul number.
+* int minDistance(float *distance, int *visited, int n) - determina indexul 
+nodului care nu a fost inca vizitat si pentru care distanta este minima. Acesta
+functie va fi folosita pentru aplicare algoritmului Dijkstra.
+* void dijkstra(Graph *graph, int *previous, int source, int n) - aplica 
+algoritmul Dijkstra pornind din nodul source si determinand drumul de cost
+minim pentru toate celelalte noduri. Algoritmul functioneaza astfel: de n ori, 
+determinam numarul nodului cu distanta minima si finita. Il adaugam in 
+vectorul de noduri vizitate. Parcurgem lista de adiacenta a nodului, pentru 
+fiecare nod destinatie din aceasta lista, determinam scorul corespunzator, 
+costul arcului/adancimea. Daca nodul este nevizitat si distanta nu este 
+infinita, verificam daca noul arc relaxeaza distanta. Daca acest lucru se 
+intampla, distanta este actualizata cu noua valoare si in vectorul de tati
+memoram numarul nodului.  
+* int costPath(Graph *graph, int *path, int n) - determina pornind de la 
+vectorul *path primit ca parametru, vectorul care contine indicii nodurilor
+care formeaza drumul, costul total al acestuia.
+
+# 3. Fisierul principal - main.c
+
+Acest fisier contine 4 functii: 
+* void resolve_C1(FILE *fin, FILE *fout) - functia in care se rezolva
+cerinta 1. Se afiseaza numarul de componente conexe in fisierul fout, 
+iar pe urmatoarele linii se vor afisa costurile subgrafurilor de cost minim
+corespunzatoare fiecarei componente conexe in ordine crescatoare.
+* void resolve_C2(FILE *fin, FILE *fout) - functia in care se rezolva cerinta
+2. Pe prima linie se va afisa fie mesajul "Echipajul nu poate ajunge la insula"
+daca acest traseu nu este posibil, fie "Echipajul nu poate transporta comoara
+inapoi la corabie", fie, daca ambele trasee sunt posibile pe prima linie va fi
+afisat drumul corespunzator scorului minim, pe a doua linie costul total al 
+drumului, pe a treia linie adancimea minima a drumul prin punctele 
+din traseu, iar pe a patra linie, numarul de drumuri care trebuiesc facute
+pentru a transporta intreaga comoara. 
